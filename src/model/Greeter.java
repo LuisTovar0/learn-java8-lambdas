@@ -1,3 +1,5 @@
+package model;
+
 /**
  * A interface tem apenas um método, porque para passarmos uma expressão lambda para uma variável apenas precisamos de
  * saber o tipo do retorno e quais são os parâmetros. Por isso, foram criadas várias interfaces disponibilizadas no
