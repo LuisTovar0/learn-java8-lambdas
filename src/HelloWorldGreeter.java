@@ -1,5 +1,3 @@
-package luistovar;
-
 public class HelloWorldGreeter implements Greeter {
 
     @Override
