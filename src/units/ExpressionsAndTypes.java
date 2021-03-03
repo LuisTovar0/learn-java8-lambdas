@@ -10,7 +10,7 @@ import java.util.function.DoubleToIntFunction;
 public class ExpressionsAndTypes {
 
     public static void main(String[] args) {
-        System.out.println("\n### Expressões e Tipos");
+        System.out.println("\n### Expressões e Tipos ###");
 
 /*
         // o conceito é isto ser parecido com o JavScript ou o Python, onde podemos

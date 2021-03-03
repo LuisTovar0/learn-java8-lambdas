@@ -1,6 +1,7 @@
 package units;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.ObjDoubleConsumer;
@@ -32,10 +33,7 @@ public class MethodReferences {
         multiplyAllElements = MethodReferences::multiplyArrayElements;
         // vamos testá-lo
         ArrayList<Double> doubleArrayList = new ArrayList<>();
-        doubleArrayList.add(4.6);
-        doubleArrayList.add(5.123);
-        doubleArrayList.add(0.543451);
-        doubleArrayList.add(20123.476123);
+        Collections.addAll(doubleArrayList, 4.6, 5.123, 0.543451, 20123.476123);
         multiplyAllElements.accept(doubleArrayList, 0.8);
 
         // neste caso há input e output no método chamado
