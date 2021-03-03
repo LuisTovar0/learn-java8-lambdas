@@ -39,6 +39,9 @@ public class MethodReferences {
         // neste caso há input e output no método chamado
         Function<ArrayList<String>, String> getLastElement = (ArrayList<String> arrayList) -> lastElement(arrayList);
         getLastElement = MethodReferences::lastElement;
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        Collections.addAll(stringArrayList, "Manuel", "Luís", "Power");
+        System.out.println(getLastElement.apply(stringArrayList));
 
     }
 

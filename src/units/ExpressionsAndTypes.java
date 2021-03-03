@@ -38,7 +38,7 @@ public class ExpressionsAndTypes {
             // anonymous inner class
             @Override
             public void perform() {
-                System.out.println("Instância da interface classes.Greeter por uma classe interna anónima");
+                System.out.println("Instância da interface Greeter por uma classe interna anónima");
             }
         };
         greet(greeter1);

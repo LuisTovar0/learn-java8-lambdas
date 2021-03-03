@@ -30,8 +30,10 @@ public class ExceptionHandling {
             }
         };
         // portanto, nada bonito
+
+        // a solução sugerida é
         action = wrapperLambda((Integer element, Integer key) -> element / key,
-                (Exception e) -> System.out.println(e.getMessage()));
+                (ArithmeticException e) -> System.out.println(e.getMessage()));
 
         ArrayList<Integer> result = applyKeyToArray(listOfInts, k, action);
         result.forEach(System.out::println);
@@ -61,11 +63,11 @@ public class ExceptionHandling {
         return result;
     }
 
-    private static BinaryOperator<Integer> wrapperLambda(BinaryOperator<Integer> action, Consumer<Exception> exceptionAction) {
+    private static BinaryOperator<Integer> wrapperLambda(BinaryOperator<Integer> action, Consumer<ArithmeticException> exceptionAction) {
         return (Integer element, Integer key) -> {
             try {
                 return action.apply(element, key);
-            } catch (Exception e) {
+            } catch (ArithmeticException e) {
                 exceptionAction.accept(e);
                 return null;
             }
