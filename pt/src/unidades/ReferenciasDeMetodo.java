@@ -12,18 +12,21 @@ public class ReferenciasDeMetodo {
 		System.out.println("\n### Referências de método ###");
 
         /* quando temos uma expressão lambda que apenas chama um método (ou seja, a expressão lambda é apenas um
-        pass-through), a expressão pode ser substituída por uma method reference. method references não têm vantagens
-        significativas, mas é bom sabermos que existem. basicamente fazem o código mais bonito
-        a sintaxe consiste em: <objeto ou classe sobre o qual se executa o método> :: <nome do método> */
+        pass-through), a expressão pode ser substituída por uma referência de método. referências de método não têm
+        vantagens significativas além de ficarem bonitas no código, mas devemos saber como funcionam para não ficarmos
+        confusos quando encontrarmos uma no código dos outros. por falar nisso, também são um flex fixe. a sintaxe é:
+            <objeto ou classe sobre o qual se executa o método>::<nome do método>
+        quando o método é de um objeto, o lado esquerdo do :: é uma referência a esse objeto. se ele for um método
+        estático, o lado esaquerdo é uma referência à classe */
 
 		// neste caso, chama-se um método que não recebe nenhum input nem retorna nenhum output
 		Runnable chamaImprimeAlgo = () -> imprimeAlgo();
-		// esta expressão lambda pode ser substituída por:
+		// este lambda pode ser substituído por:
 		chamaImprimeAlgo = ReferenciasDeMetodo::imprimeAlgo;
 		chamaImprimeAlgo.run();
 
 		// neste caso, chama-se um método que recebe input mas não retorna output
-		// o objeto sobre o qual é chamado o método desejado é System.out, uma variável global pública da classe System
+		// o objeto sobre o qual é chamado o método é System.out, uma variável global pública da classe System
 		Consumer<String> imprimeString = (String s) -> System.out.println(s);
 		imprimeString = System.out::println;
 		imprimeString.accept("Um Consumer está a imprimir isto através de uma referência ao método System.out.println");
