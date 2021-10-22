@@ -16,10 +16,10 @@ public class TratamentoExcecoes {
 		int k = 0; // onde é que apanhamos a exceção, se k for 0?
 
 		BinaryOperator<Integer> acao;
-		// talvez devêssemos apanhá-la na expressão lambda, onde já conseguimos saber qual é o problema
 		acao = (Integer elemento, Integer chave) -> elemento / chave;
-		// mas isso ia transformar esta expressão lambda bem bonita num monstro, por causa do try/catch
+		// talvez devêssemos apanhá-la na expressão lambda, onde já conseguimos saber qual é o problema
 
+		// mas isso ia transformar esta bela expressão lambda num monstro, por causa do try/catch
 		// ficava qualquer coisa como:
 		acao = (Integer elemento, Integer chave) -> {
 			try {
@@ -32,24 +32,24 @@ public class TratamentoExcecoes {
 		// portanto, nada bonito
 
 		// a solução sugerida é
-		acao = lambdaEnvolvente((Integer elemento, Integer chave) -> elemento / chave,
-				(ArithmeticException excecao) -> System.out.println(excecao.getMessage()));
+		acao = lambdaEnvolvente(
+				(Integer elemento, Integer chave) -> elemento / chave,
+				(ArithmeticException excecao) -> System.out.println(excecao.getMessage())
+		);
+		// apesar de haver, como sempre, situações em que não será a melhor solução
 
 		ArrayList<Integer> resultado = aplicarChaveAoArray(listaInt, k, acao);
 		resultado.forEach(System.out::println);
-
 	}
 
 	/**
 	 * Para cada elemento da lista dada, é efetuada a operação {@code acao},
-	 * e guardado o resultado na nova lista criada, que depois é retornada
+	 * e guardado o resultado na nova lista criada, que é depois retornada.
 	 *
-	 * @param lista a lista
-	 * @param chave a chave
-	 * @param acao  ação executada utilizando a chave em cada elemento da lista
-	 * @param <T>   tipo da lista ArrayList
-	 * @param <K>   tipo da chave
-	 * @param <R>   tipo de retorno
+	 * @param acao ação executada utilizando a chave em cada elemento da lista
+	 * @param <T>  tipo da lista ArrayList
+	 * @param <K>  tipo da chave
+	 * @param <R>  tipo de retorno
 	 * @return uma nova lista com os resultados das operações para cada elemento
 	 */
 	private static <T, K, R> ArrayList<R> aplicarChaveAoArray(ArrayList<T> lista, K chave, BiFunction<T, K, R> acao) {
