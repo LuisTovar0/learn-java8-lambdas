@@ -1,13 +1,13 @@
-package units;
+package unidades;
 
 import model.Greeter;
-import model.HelloWorldGreeter;
+import model.GreeterOlaMundo;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.DoubleToIntFunction;
 
-public class ExpressionsAndTypes {
+public class ExpressoesETipos {
 
     public static void main(String[] args) {
         System.out.println("\n### Expressões e Tipos ###");
@@ -30,8 +30,8 @@ public class ExpressionsAndTypes {
         addFunction = (int a, int b) -> a + b;
 */
         // maneira sem lambdas
-        HelloWorldGreeter helloWorldGreeter = new HelloWorldGreeter();
-        greet(helloWorldGreeter);
+        GreeterOlaMundo greeterOlaMundo = new GreeterOlaMundo();
+        cumprimenta(greeterOlaMundo);
 
         // instância da interface com uma classe interna anónima
         Greeter greeter1 = new Greeter() {
@@ -41,33 +41,33 @@ public class ExpressionsAndTypes {
                 System.out.println("Instância da interface Greeter por uma classe interna anónima");
             }
         };
-        greet(greeter1);
+        cumprimenta(greeter1);
 
         // implementação com uma expressão lambda
         Greeter greeter2 = () -> System.out.println("Implementação da interface classes.Greeter com uma expressão lambda");
-        greet(greeter2);
+        cumprimenta(greeter2);
 
         /* As interfaces funcionais que já vêm com o Java 8 permitem que não precisemos de criar uma interface só com um
         método sempre que queremos utilizar métodos como variáveis. */
         // exemplos de interfaces funcionais do Java 8
-        BiConsumer<String, Integer> printNTimes = (String s, Integer n) -> {
+        BiConsumer<String, Integer> imprimeNVezes = (String s, Integer n) -> {
             for (int i = 0; i < n; i++)
                 System.out.println(s);
         };
-        printNTimes.accept("haha", 3);
+        imprimeNVezes.accept("Sou imprimido 3 vezes.", 3);
 
         BiFunction<String, Integer, Character> getCharAt = (String s, Integer n) -> s.charAt(n);
         System.out.println(getCharAt.apply("Luís Tovar", 2));
 
-        DoubleToIntFunction metersToCentimeters = (double d) -> {
+        DoubleToIntFunction metrosParaCentimetros = (double d) -> {
             double cpy = d * 100;
             return (int) cpy;
         };
-        System.out.println(metersToCentimeters.applyAsInt(1.85));
+        System.out.println(metrosParaCentimetros.applyAsInt(1.85));
 
     }
 
-    public static void greet(Greeter greeter) {
+    public static void cumprimenta(Greeter greeter) {
         /* Por o parâmetro ter o tipo classes.Greeter, é garantido que o objeto tem o método perform(). Além disso, são
         conhecidos o tipo de retorno e quais os parâmetros necessários. Isto permite manter a segurança sobre tipos de
         variáveis e de funções que o Java tem sempre. */
