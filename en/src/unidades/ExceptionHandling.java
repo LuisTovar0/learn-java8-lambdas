@@ -8,70 +8,69 @@ import java.util.function.Consumer;
 
 public class ExceptionHandling {
 
-    public static void main(String[] args) {
-        System.out.println("\n### Tratamento de exceções ###");
+	public static void main(String[] args) {
+		System.out.println("\n### Exception Handling ###");
 
-        ArrayList<Integer> listOfInts = new ArrayList<>();
-        Collections.addAll(listOfInts, 1, 2, 3, 4);
-        int k = 0; // onde é que apanhamos a exceção, se k for 0?
+		ArrayList<Integer> listOfInts = new ArrayList<>();
+		Collections.addAll(listOfInts, 1, 2, 3, 4);
+		int k = 0; // where do we catch the exception if k is 0?
 
-        BinaryOperator<Integer> action;
-        // talvez devêssemos apanhá-la na expressão lambda, onde já conseguimos saber qual é o problema
-        action = (Integer element, Integer key) -> element / key;
-        // mas isso ia transformar esta expressão lambda bem bonita num monstro, por causa do try/catch
+		BinaryOperator<Integer> action;
+		action = (Integer element, Integer key) -> element / key; // unsafe implementation
+		// maybe we should catch it inside of the lambda expression, where we can already know what the problem is.
 
-        // ficava qualquer coisa como:
-        action = (Integer element, Integer key) -> {
-            try {
-                return element / key;
-            } catch (ArithmeticException ex) {
-                System.out.println("Este elemento causou uma exceção aritmética");
-                return null;
-            }
-        };
-        // portanto, nada bonito
+		// but that would make this expression a monster due to the try/catch clause
+		// it would become something like:
+		action = (Integer element, Integer key) -> {
+			try {
+				return element / key;
+			} catch (ArithmeticException ex) {
+				System.out.println("This element caused an arithmetic exception.");
+				return null;
+			}
+		};
+		// doesn't look good like lambdas should
 
-        // a solução sugerida é
-        action = wrapperLambda((Integer element, Integer key) -> element / key,
-                (ArithmeticException e) -> System.out.println(e.getMessage()));
+		// this is the mostly recommended implementation
+		action = wrapperLambda((Integer element, Integer key) -> element / key,
+				(ArithmeticException e) -> System.out.println(e.getMessage()));
+		// although of course there can be situations where it's not the best solution
 
-        ArrayList<Integer> result = applyKeyToArray(listOfInts, k, action);
-        result.forEach(System.out::println);
+		ArrayList<Integer> result = applyKeyToArray(listOfInts, k, action);
+		result.forEach(System.out::println);
+	}
 
-    }
+	/**
+	 * For each element of the given list, the {@code action} operation is executed, and the result is saved
+	 * in the newly created list, which is then returned.
+	 *
+	 * @param action action that applies the key to each element of the list
+	 * @param <T>    type of the ArrayList list
+	 * @param <K>    type of the key
+	 * @param <R>    return type
+	 * @return a new list with the result of the operation for each element
+	 */
+	private static <T, K, R> ArrayList<R> applyKeyToArray(ArrayList<T> list, K key, BiFunction<T, K, R> action) {
+		ArrayList<R> result = new ArrayList<>();
+		list.forEach((T element) -> {
+			// we could catch the exception here, because it's the exception's source
+			R r = action.apply(element, key);
+			// but it wouldn't be possible to predict the exception type, since we don't know the action operation
+			result.add(r);
+		});
+		return result;
+	}
 
-    /**
-     * Para cada elemento da lista dada, é efetuada a operação {@code action},
-     * e guardado o resultado na nova lista criada, que depois é retornada
-     *
-     * @param list   a lista
-     * @param key    a chave
-     * @param action ação executada utilizando a chave em cada elemento da lista
-     * @param <T>    tipo da lista ArrayList
-     * @param <K>    tipo da chave
-     * @param <R>    tipo de retorno
-     * @return uma nova lista com os resultados das operações para cada elemento
-     */
-    private static <T, K, R> ArrayList<R> applyKeyToArray(ArrayList<T> list, K key, BiFunction<T, K, R> action) {
-        ArrayList<R> result = new ArrayList<>();
-        list.forEach((T element) -> {
-            // podíamos apanhar a exceção aqui, pois é de onde vem a exceção
-            R r = action.apply(element, key);
-            // mas não seria possível prever o tipo de exceção, porque não conhecemos a operação em action
-            result.add(r);
-        });
-        return result;
-    }
-
-    private static BinaryOperator<Integer> wrapperLambda(BinaryOperator<Integer> action, Consumer<ArithmeticException> exceptionAction) {
-        return (Integer element, Integer key) -> {
-            try {
-                return action.apply(element, key);
-            } catch (ArithmeticException e) {
-                exceptionAction.accept(e);
-                return null;
-            }
-        };
-    }
+	private static BinaryOperator<Integer> wrapperLambda(BinaryOperator<Integer> action,
+	                                                     Consumer<ArithmeticException> exceptionAction) {
+		return (Integer element, Integer key) -> {
+			try {
+				return action.apply(element, key);
+			} catch (ArithmeticException e) {
+				exceptionAction.accept(e);
+				return null;
+			}
+		};
+	}
 
 }
