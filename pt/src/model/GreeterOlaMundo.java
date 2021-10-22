@@ -1,6 +1,6 @@
 package model;
 
-public class HelloWorldGreeter implements Greeter {
+public class GreeterOlaMundo implements Greeter {
 
     @Override
     public void perform() {
